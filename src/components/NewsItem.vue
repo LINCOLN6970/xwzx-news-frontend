@@ -1,8 +1,11 @@
 <template>
   <div class="news-item" @click="goToDetail">
     <div class="news-content">
-      <h3 class="news-title">{{ news.title }}</h3>
-      <p class="news-desc">{{ news.description }}</p>
+      <h3 class="news-title">
+        <span class="origin-badge">{{ sourceLabel }}</span>
+        {{ news.title }}
+      </h3>
+      <p class="news-desc">{{ previewText }}</p>
       <div class="news-info">
         <span>{{ news.author }}</span>
         <span>{{ news.publishTime }}</span>
@@ -16,7 +19,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -28,7 +31,32 @@ const props = defineProps({
 
 const router = useRouter()
 
+const previewText = computed(() => {
+  const description = props.news?.description || ''
+  const content = props.news?.content || ''
+  return description || content.slice(0, 180)
+})
+
+const sourceLabel = computed(() => {
+  const id = String(props.news?.id ?? '')
+  const source = String(props.news?.source ?? '')
+  const isExternal = Boolean(props.news?.isExternal ?? props.news?.is_external)
+
+  if (id.startsWith('external-')) return 'API实时'
+  if (source.startsWith('crawler')) return '网页爬虫'
+  if (source === 'external' || isExternal) return '外部API入库'
+  return '本地数据库'
+})
+
 const goToDetail = () => {
+  if (props.news?.source === 'external') {
+    router.push({
+      path: `/news/detail/${props.news.id}`,
+      query: { source: 'external' }
+    })
+    return
+  }
+
   router.push(`/news/detail/${props.news.id}`)
 }
 </script>
@@ -57,6 +85,18 @@ const goToDetail = () => {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+.origin-badge {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  line-height: 16px;
+  color: #1989fa;
+  background: #e8f3ff;
+  vertical-align: text-top;
 }
 
 .news-desc {

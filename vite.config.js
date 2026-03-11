@@ -11,12 +11,11 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // 代理所有 /api 开头的请求到后端
-      // 本地开发时使用 Azure 后端（后端已部署在云端）
+      // 代理所有 /api 开头的请求到本地后端（本地开发时连接 toutiao_backend）
+      // 切回云端请改为: target: 'https://toutiao-func-dev-xxx.azurewebsites.net'
       '/api': {
-        target: 'https://toutiao-func-dev-d2bdehe8d5b6gbf5.canadacentral-01.azurewebsites.net',
+        target: 'http://localhost:8000',
         changeOrigin: true,
-        secure: true,
       }
     }
   }

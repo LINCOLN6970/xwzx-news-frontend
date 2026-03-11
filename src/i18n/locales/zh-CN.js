@@ -35,7 +35,11 @@ export default {
       military: '军事',
       technology: '科技',
       finance: '财经',
-      more: '更多'
+      more: '更多',
+      cnn: 'CNN',
+      fox: 'FOX',
+      chinanews: '中国新闻网',
+      externalAi: 'AI外部'
     }
   },
   aiChat: {

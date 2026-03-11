@@ -116,7 +116,11 @@ const getCategoryTranslation = (categoryName) => {
     '军事': 'military',
     '科技': 'technology',
     '财经': 'finance',
-    '更多': 'more'
+    '更多': 'more',
+    'CNN': 'cnn',
+    'FOX': 'fox',
+    '中国新闻网': 'chinanews',
+    'AI外部': 'externalAi'
   };
   
   const key = categoryMap[categoryName];
